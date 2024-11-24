@@ -70,6 +70,10 @@ class Game:
     # Process the command entered by the player
     def process_command(self, command_string) -> None:
 
+        #Affiche rien lorsque le joueur tape "entrer"
+        if command_string=='':
+            return
+
         # Split the command string into a list of words
         list_of_words = command_string.split(" ")
 
