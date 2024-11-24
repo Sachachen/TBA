@@ -14,6 +14,14 @@ class Player():
         if next_room is None:
             print("\nAucune porte dans cette direction !\n")
             return False
+        # If the next room is interdit, print an error message and return False.
+        if next_room == "interdit":
+            print("\nLe passage est interdit !\n")
+            return False
+        # If the next room is unique, print an error message and return False.
+        if next_room == "unique":
+            print("\nLe chemin a mystérieusement disparu ! Prenez un autre chemin !\n")
+            return False
 
         # Set the current room to the next room.
         self.current_room = next_room
