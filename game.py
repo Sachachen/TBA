@@ -51,20 +51,19 @@ class Game:
 
         # Create exits for rooms
 
-        forest.exits = {"N" : cave, "E" : None, "S" : castle, "O" : None, "U" : None, "D" : None}
-        tower.exits = {"N" : cottage, "E" : None, "S" : None, "O" : None, "U" : etage1_tower, "D" : None}
-        cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None, "U" : None, "D" : None}
-        cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave, "U" : None, "D" : None}
-        swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle, "U" : None, "D" : None}
-        castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None, "U" : etage1_castle, "D" : sous_sol}
-        sous_sol.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : castle, "D" : None}
-        etage1_castle.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : castle}
-        etage1_tower.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : tower}
+        train.exits = {"N" : None, "E" : None, "S" : village, "O" : None, "U" : ile_flottante, "D" : None}
+        monastere.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : marche_souterrain}
+        village.exits = {"N" : train, "E" : arene, "S" : None, "O" : monastere, "U" : None, "D" : None}
+        foret.exits = {"N" : mine, "E" : None, "S" : None, "O" : None, "U" : None, "D" : None}
+        ile_flottante.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : train}
+        marche_souterrain.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : mine, "D" : None}
+        mine.exits = {"N" : village, "E" : None, "S" : None, "O" : None, "U" : None, "D" : None}
+        arene.exits = {"N" : None, "E" : None, "S" : None, "O" : Village, "U" : None, "D" : None}
 
         # Setup player and starting room
 
         self.player = Player(input("\nEntrez votre nom: "))
-        self.player.current_room = swamp
+        self.player.current_room = foret
 
     # Play the game
     def play(self):
