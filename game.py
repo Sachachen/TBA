@@ -52,7 +52,7 @@ class Game:
         # Create exits for rooms
 
         forest.exits = {"N" : cave, "E" : None, "S" : castle, "O" : None, "U" : None, "D" : None}
-        tower.exits = {"N" : cottage, "E" : None, "S" : None, "O" : None, "U" : etage1_tower, "D" : None}
+        tower.exits = {"N" : cottage, "E" : None, "S" : castle, "O" : None, "U" : etage1_tower, "D" : None}
         cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None, "U" : None, "D" : None}
         cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave, "U" : None, "D" : None}
         swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle, "U" : None, "D" : None}
