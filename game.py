@@ -30,24 +30,22 @@ class Game:
         
         # Setup rooms
 
-        forest = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
-        self.rooms.append(forest)
-        tower = Room("Tower", "dans une immense tour en pierre qui s'élève au dessus des nuages.")
-        self.rooms.append(tower)
-        cave = Room("Cave", "dans une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
-        self.rooms.append(cave)
-        cottage = Room("Cottage", "dans un petit chalet pittoresque avec un toit de chaume. Une épaisse fumée verte sort de la cheminée.")
-        self.rooms.append(cottage)
-        swamp = Room("Swamp", "dans un marécage sombre et ténébreux. L'eau bouillonne, les abords sont vaseux.")
-        self.rooms.append(swamp)
-        castle = Room("Castle", "dans un énorme château fort avec des douves et un pont levis. Sur les tours, des flèches en or massif.")
-        self.rooms.append(castle)
-        sous_sol = Room("sous sol", "au sous sol du château.")
-        self.rooms.append(sous_sol)
-        etage1_castle = Room("etage1_castle", "à l'étage 1 du château")
-        self.rooms.append(etage1_castle)
-        etage1_tower = Room("etage1_tower", "à l'étage 1 de la tour")
-        self.rooms.append(etage1_tower)
+        train = Room("train", "au train de l'infini.")
+        self.rooms.append(train)
+        monastere = Room("monastere", "dans un monastère.")
+        self.rooms.append(monastere)
+        village = Room("village", "dans un village.")
+        self.rooms.append(village)
+        foret = Room("foret", "dans une fôret.")
+        self.rooms.append(foret)
+        ile_flottante = Room("ile_flottante", "dans une île flottante.")
+        self.rooms.append(ile_flottante)
+        marche_souterrain = Room("marche_souterrain", "dans un marché souterrain.")
+        self.rooms.append(marche_souterrain)
+        mine = Room("mine", "dans un champ de mines.")
+        self.rooms.append(mine)
+        arene = Room("arene", "à l'arène")
+        self.rooms.append(arene)
 
         # Create exits for rooms
 
@@ -56,9 +54,9 @@ class Game:
         village.exits = {"N" : train, "E" : arene, "S" : None, "O" : monastere, "U" : None, "D" : None}
         foret.exits = {"N" : mine, "E" : None, "S" : None, "O" : None, "U" : None, "D" : None}
         ile_flottante.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : train}
-        marche_souterrain.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : mine, "D" : None}
+        marche_souterrain.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : monastere, "D" : None}
         mine.exits = {"N" : village, "E" : None, "S" : None, "O" : None, "U" : None, "D" : None}
-        arene.exits = {"N" : None, "E" : None, "S" : None, "O" : Village, "U" : None, "D" : None}
+        arene.exits = {"N" : None, "E" : None, "S" : None, "O" : village, "U" : None, "D" : None}
         
         # Setup player and starting room
 
