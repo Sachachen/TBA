@@ -2,8 +2,9 @@
 class Player():
 
     # Define the constructor.
-    def __init__(self, name):
+    def __init__(self, name,history):
         self.name = name
+        self.history = history
         self.current_room = None
     
     # Define the move method.
