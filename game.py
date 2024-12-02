@@ -92,7 +92,6 @@ class Game:
         else:
             command = self.commands[command_word]
             command.action(self, list_of_words, command.number_of_parameters)
-        print(get_history())
 
     # Print the welcome message
     def print_welcome(self):
@@ -100,6 +99,10 @@ class Game:
         print("Entrez 'help' si vous avez besoin d'aide.")
         #
         print(self.player.current_room.get_long_description())
+    def get_history(self):
+        if not self.history:
+            return "Aucun lieu visité pour le moment."
+        return " -> ".join(self.history)
     
 
 def main():

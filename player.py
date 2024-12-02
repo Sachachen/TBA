@@ -20,6 +20,6 @@ class Player():
         # Set the current room to the next room.
         self.current_room = next_room
         print(self.current_room.get_long_description())
+        print(self.get_history())
         return True
-
     
