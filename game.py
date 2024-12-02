@@ -92,6 +92,7 @@ class Game:
         else:
             command = self.commands[command_word]
             command.action(self, list_of_words, command.number_of_parameters)
+        print(get_history())
 
     # Print the welcome message
     def print_welcome(self):
