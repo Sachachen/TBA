@@ -34,7 +34,7 @@ class Game:
         
         # Setup rooms
 
-        train = Room("train", "au train de l'infini.")
+        train = Room("train", "dans le train de l'infini.")
         self.rooms.append(train)
         monastere = Room("monastere", "dans un monastère.")
         self.rooms.append(monastere)
@@ -48,7 +48,7 @@ class Game:
         self.rooms.append(marche_souterrain)
         mine = Room("mine", "dans un champ de mines.")
         self.rooms.append(mine)
-        arene = Room("arene", "à l'arène")
+        arene = Room("arene", "dans une arène")
         self.rooms.append(arene)
 
         # Create exits for rooms
