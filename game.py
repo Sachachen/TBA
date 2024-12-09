@@ -6,6 +6,7 @@ from room import Room
 from player import Player
 from command import Command
 from actions import Actions
+from item import Item
 
 class Game:
 
@@ -15,6 +16,7 @@ class Game:
         self.rooms = []
         self.commands = {}
         self.player = None
+        self.items = []
     
     # Setup the game
     def setup(self):
@@ -31,6 +33,13 @@ class Game:
         self.commands["back"] = back
         history = Command("history", " : affiche l'historique des lieux visités", Actions.history, 0)
         self.commands["history"] = history
+        
+        # Setup items
+
+        lampe_torche = Item("lampe_torche", "une lampe torche permettant de voir dans l'obscurité", 0.5)
+        gant_force = Item("gant_force", "des gants donnant une force herculéenne", 10)
+        boite_cle_serrage = Item("boite_cle_serrage", "une boite de clé de serrage w")
+        deguisement = Item("deguisement", "un deguisement rouge et blanc")
         
         # Setup rooms
 
@@ -66,6 +75,7 @@ class Game:
 
         self.player = Player(input("\nEntrez votre nom: "))
         self.player.current_room = foret
+
 
     # Play the game
     def play(self):
