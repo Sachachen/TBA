@@ -27,6 +27,10 @@ class Game:
         self.commands["quit"] = quit
         go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O)", Actions.go, 1)
         self.commands["go"] = go
+        back = Command("back", " : revenir à la salle précédente", Actions.back, 0)
+        self.commands["back"] = back
+        history = Command("history", " : affiche l'historique des lieux visites", Actions.history, 0)
+        self.commands["history"] = history
         
         # Setup rooms
 
@@ -99,10 +103,6 @@ class Game:
         print("Entrez 'help' si vous avez besoin d'aide.")
         #
         print(self.player.current_room.get_long_description())
-    def get_history(self):
-        if not self.history:
-            return "Aucun lieu visité pour le moment."
-        return " -> ".join(self.history)
     
 
 def main():
