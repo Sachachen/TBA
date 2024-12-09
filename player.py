@@ -29,7 +29,7 @@ class Player():
             if len(self.history) >= 1:
                 print("\nVous avez déjà visité les pièces suivantes:")
                 for room in self.history:  # Exclut la pièce actuelle de l'historique affiché
-                    print(f"    - {room.description[5:]}")
+                    print(f"    - {room.description[5:-1]}")
             else:
                 print("\nVous n'avez visité aucune autre pièce.")
         except Exception as e:

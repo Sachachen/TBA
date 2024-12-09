@@ -161,7 +161,7 @@ class Actions:
             command_word = list_of_words[0]
             print(MSG0.format(command_word=command_word))
             return False
-        print(f"\n{game.player.get_history()}")
+        game.player.get_history()
     
     def back(game, list_of_words, number_of_parameters):
         if len(list_of_words) != number_of_parameters + 1:
