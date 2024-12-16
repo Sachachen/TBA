@@ -168,5 +168,72 @@ class Actions:
             command_word = list_of_words[0]
             print(MSG0.format(command_word=command_word))
             return False
-
         return game.player.back()
+    
+    def look(game, list_of_words, number_of_parameters):
+        if len(list_of_words) != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+        
+        print(game.player.current_room.get_inventory())
+
+    def take(game, list_of_words, number_of_parameters):
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG1.format(command_word=command_word))
+            return False
+        
+        player = game.player
+        name_item = list_of_words[1].lower()
+
+        # for poids in player.inventory.values() :
+        #     total_weight += poids.weight
+
+        for item in player.current_room.inventory :
+            if name_item == item.name :
+
+                # total_weight += item.weight
+                # if total_weight > player.max_weight :
+                #     print("\nLimite d'objet atteinte, il faut deposer un objet avant d'en prendre un nouveau.\n")
+                #     return True
+                
+                player.inventory[item.name]=item
+                player.current_room.inventory.remove(item)
+                print(f"\nVous avez pris l'objet : '{item.name}'.\n")
+                return True
+        if name_item in player.inventory:
+                print(f"\nL'objet '{name_item}' se trouve deja dans votre inventaire.\n")
+        else :
+            print(f"\nL'objet '{name_item}' n'est pas dans cet endroit.\n")
+        return True
+    
+    def drop(game, list_of_words, number_of_parameters):
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG1.format(command_word=command_word))
+            return False
+
+        player = game.player
+        name_item = list_of_words[1].lower()
+
+        if name_item in player.inventory :
+            item = player.inventory.pop(name_item)
+            player.current_room.inventory.add(item)
+            print(f"\nVous avez déposé l'objet : '{item.name}'.\n")
+        else :
+            print(f"\nVous ne possedez pas cet objet : '{name_item}'.\n")
+        return True
+    
+    def check(game, list_of_words, number_of_parameters):
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+        print(f"\n{game.player.get_inventory()}")

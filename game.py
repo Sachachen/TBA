@@ -33,13 +33,14 @@ class Game:
         self.commands["back"] = back
         history = Command("history", " : affiche l'historique des lieux visités", Actions.history, 0)
         self.commands["history"] = history
-        
-        # Setup items
-
-        lampe_torche = Item("lampe_torche", "une lampe torche permettant de voir dans l'obscurité", 0.5)
-        gant_force = Item("gant_force", "des gants donnant une force herculéenne", 10)
-        boite_cle_serrage = Item("boite_cle_serrage", "une boite de clé de serrage w")
-        deguisement = Item("deguisement", "un deguisement rouge et blanc")
+        look = Command("look", " : regarder les objets dans la pièce", Actions.look, 0)
+        self.commands["look"] = look
+        take = Command("take", " <objet> : prendre un objet", Actions.take,1)
+        self.commands["take"] = take
+        drop = Command("drop", " <objet> : reposer un objet", Actions.drop,1)
+        self.commands["drop"] = drop
+        check = Command("check", " : affiche l'inventaire", Actions.check, 0)
+        self.commands["check"] = check
         
         # Setup rooms
 
@@ -70,6 +71,18 @@ class Game:
         marche_souterrain.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : monastere, "D" : None}
         mine.exits = {"N" : village, "E" : None, "S" : None, "O" : None, "U" : None, "D" : None}
         arene.exits = {"N" : None, "E" : None, "S" : None, "O" : village, "U" : None, "D" : None}
+        
+        # Setup items
+
+        sword = Item("sword", "une épée au fil tranchant comme un rasoir", 3)
+        self.items.append(sword)
+        foret.inventory.add(sword)
+        lampe_torche = Item("lampe_torche", "une lampe torche permettant de voir dans l'obscurité", 0.5)
+        self.items.append(lampe_torche)
+        mine.inventory.add(lampe_torche)
+        gant_force = Item("gant_force", "des gants donnant une force herculéenne", 10)
+        boite_cle_serrage = Item("boite_cle_serrage", "une boite de clé de serrage w",30)
+        deguisement = Item("deguisement", "un deguisement rouge et blanc",20)
         
         # Setup player and starting room
 

@@ -6,6 +6,7 @@ class Player():
         self.name = name
         self.history = []
         self.current_room = None
+        self.inventory = {}
     
     # Define the move method.
     def move(self, direction):
@@ -50,3 +51,12 @@ class Player():
         except Exception as e:
             print(f"\nUne erreur inattendue s'est produite lors du retour en arrière : {e}")
             return False
+    
+    def get_inventory(self):
+        if not self.inventory:
+            return "\nVotre inventaire est vide."
+        else:
+            inventory_contents = "\nVous disposez des items suivants :"
+            for item in self.inventory.values():
+                inventory_contents += f"\n  - {item}"
+            return inventory_contents
