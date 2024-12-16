@@ -7,6 +7,7 @@ from player import Player
 from command import Command
 from actions import Actions
 from item import Item
+from beamer import Beamer
 
 class Game:
 
@@ -41,6 +42,10 @@ class Game:
         self.commands["drop"] = drop
         check = Command("check", " : affiche l'inventaire", Actions.check, 0)
         self.commands["check"] = check
+        use = Command("use", " : utilise un item de ton inventaire", Actions.use, 1)
+        self.commands["use"] = use
+        charge = Command("charge", " : charger un Beamer avec la salle actuelle", Actions.charge, 1)
+        self.commands["charge"] = charge
         
         # Setup rooms
 
@@ -77,13 +82,22 @@ class Game:
         sword = Item("sword", "une épée au fil tranchant comme un rasoir", 3)
         self.items.append(sword)
         foret.inventory.add(sword)
-        lampe_torche = Item("lampe_torche", "une lampe torche permettant de voir dans l'obscurité", 0.5)
+        lampe_torche = Item("lampe_torche", "une lampe torche permettant de voir dans l'obscurité", 1)
         self.items.append(lampe_torche)
         mine.inventory.add(lampe_torche)
         gant_force = Item("gant_force", "des gants donnant une force herculéenne", 10)
-        boite_cle_serrage = Item("boite_cle_serrage", "une boite de clé de serrage w",30)
+        self.items.append(gant_force)
+        arene.inventory.add(gant_force)
+        boite_cle_serrage = Item("boite_cle_serrage", "une boite de clé de serrage w",20)
+        self.items.append(boite_cle_serrage)
+        train.inventory.add(boite_cle_serrage)
         deguisement = Item("deguisement", "un deguisement rouge et blanc",20)
-        
+        self.items.append(deguisement)
+        village.inventory.add(deguisement)
+        beamer = Beamer("beamer", "Un appareil magique pour se téléporter", 25)
+        self.items.append(beamer)
+        village.inventory.add(beamer)
+
         # Setup player and starting room
 
         self.player = Player(input("\nEntrez votre nom: "))

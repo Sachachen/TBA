@@ -9,6 +9,7 @@
 # The functions print an error message if the number of parameters is incorrect.
 # The error message is different depending on the number of parameters expected by the command.
 
+from beamer import Beamer
 
 # The error message is stored in the MSG0 and MSG1 variables and formatted with the command_word variable, the first word in the command.
 # The MSG0 variable is used when the command does not take any parameter.
@@ -188,17 +189,18 @@ class Actions:
         
         player = game.player
         name_item = list_of_words[1].lower()
+        total_weight = 0
 
-        # for poids in player.inventory.values() :
-        #     total_weight += poids.weight
+        for poids in player.inventory.values() :
+            total_weight += poids.weight
 
         for item in player.current_room.inventory :
             if name_item == item.name :
-
-                # total_weight += item.weight
-                # if total_weight > player.max_weight :
-                #     print("\nLimite d'objet atteinte, il faut deposer un objet avant d'en prendre un nouveau.\n")
-                #     return True
+                
+                total_weight += item.weight
+                if total_weight > player.max_weight :
+                    print("\nLimite d'objet atteinte, il faut deposer un objet avant d'en prendre un nouveau.\n")
+                    return True
                 
                 player.inventory[item.name]=item
                 player.current_room.inventory.remove(item)
@@ -224,7 +226,7 @@ class Actions:
         if name_item in player.inventory :
             item = player.inventory.pop(name_item)
             player.current_room.inventory.add(item)
-            print(f"\nVous avez déposé l'objet : '{item.name}'.\n")
+            # print(f"\nVous avez déposé l'objet : '{item.name}'.\n")
         else :
             print(f"\nVous ne possedez pas cet objet : '{name_item}'.\n")
         return True
@@ -237,3 +239,36 @@ class Actions:
             print(MSG0.format(command_word=command_word))
             return False
         print(f"\n{game.player.get_inventory()}")
+    
+    def use(game, list_of_words, number_of_parameters):
+        if len(list_of_words) != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG1.format(command_word=command_word))
+            return False
+        
+        item_name = list_of_words[1]
+        item = game.player.inventory.get(item_name, None)
+        
+        if item_name in game.player.inventory:
+            if isinstance(item,Beamer):
+                return item.use(game)
+        else:
+            print(f"L'objet '{item_name}' n'est pas utilisable ou n'est pas un Beamer.")
+            return False
+
+    def charge(game, list_of_words, number_of_parameters):
+        if len(list_of_words) != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG1.format(command_word=command_word))
+            return False
+        
+        item_name = list_of_words[1]
+        item = game.player.inventory.get(item_name, None)
+        print(item_name)
+        
+        if item_name in game.player.inventory:
+            item.charge(game.player.current_room)
+            return True
+        else:
+            print(f"L'objet '{item_name}' ne peut pas être chargé ou n'est pas un Beamer.")
+            return False
