@@ -8,6 +8,8 @@ from command import Command
 from actions import Actions
 from item import Item
 from beamer import Beamer
+from character import Character
+from debug import DEBUG
 
 class Game:
 
@@ -46,6 +48,8 @@ class Game:
         self.commands["use"] = use
         charge = Command("charge", " : charger un Beamer avec la salle actuelle", Actions.charge, 1)
         self.commands["charge"] = charge
+        talk = Command("talk", " : interagir avec un pnj de la meme piece", Actions.talk, 1)
+        self.commands["talk"] = talk
         
         # Setup rooms
 
@@ -69,7 +73,7 @@ class Game:
         # Create exits for rooms
 
         train.exits = {"N" : None, "E" : None, "S" : village, "O" : None, "U" : ile_flottante, "D" : None}
-        monastere.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : marche_souterrain}
+        monastere.exits = {"N" : None, "E" : village, "S" : None, "O" : None, "U" : None, "D" : marche_souterrain}
         village.exits = {"N" : train, "E" : arene, "S" : None, "O" : monastere, "U" : None, "D" : None}
         foret.exits = {"N" : mine, "E" : None, "S" : None, "O" : None, "U" : None, "D" : None}
         ile_flottante.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : train}
@@ -88,7 +92,7 @@ class Game:
         gant_force = Item("gant_force", "des gants donnant une force herculéenne", 10)
         self.items.append(gant_force)
         arene.inventory.add(gant_force)
-        boite_cle_serrage = Item("boite_cle_serrage", "une boite de clé de serrage w",20)
+        boite_cle_serrage = Item("boite_cle_serrage", "une boite de clé de serrage",20)
         self.items.append(boite_cle_serrage)
         train.inventory.add(boite_cle_serrage)
         deguisement = Item("deguisement", "un deguisement rouge et blanc",20)
@@ -97,6 +101,20 @@ class Game:
         beamer = Beamer("beamer", "Un appareil magique pour se téléporter", 25)
         self.items.append(beamer)
         village.inventory.add(beamer)
+
+        # Setup characters (PNJ)
+        marchand = Character("marchand", "un marchand", village, ["Approche, voyageur ! Mes capes bénies protégeront ton âme et guideront tes pas !"])
+        village.characters[marchand.name] = marchand
+        religieux = Character("religieux", "un religieux vêtu d'une longue robe rouge recouvrant le corps jusqu'aux pieds et d'une capuche blanche", monastere, ["Seuls les élus peuvent franchir ce seuil. Tourne les talons, impur !", "Ta profanation sera lavée dans ton propre sang.", "Bienvenue, frère dans la foi. Que ta dévotion illumine ces lieux sacrés."])
+        monastere.characters[religieux.name] = religieux
+        Henoch = Character("Henoch", "mon petit frère", monastere, ["Merci grand frère, tu m'as retrouvé"])
+        marche_souterrain.characters[Henoch.name] = Henoch
+        Hercule = Character("Hercule", "mon grand frère", arene, ["HAHAHA, merci petit frère"])
+        arene.characters[Hercule.name] = Hercule
+        maman = Character("maman", "ma mère", ile_flottante, ["Mes enfants vous êtes sain et sauf, malheureusement votre père n'est plus là..."])
+        ile_flottante.characters[maman.name] = maman
+        ravisseur = Character("ravisseur", "personnage très menaçante", mine, ["ARRETE TOI","Un seul cri, et tu regretteras d’être encore en vie."])
+        mine.characters[ravisseur.name] = ravisseur
 
         # Setup player and starting room
 
@@ -133,6 +151,9 @@ class Game:
         else:
             command = self.commands[command_word]
             command.action(self, list_of_words, command.number_of_parameters)
+            if command_word != "quit":
+                    self.move_characters()
+                    pass
 
     # Print the welcome message
     def print_welcome(self):
@@ -140,6 +161,24 @@ class Game:
         print("Entrez 'help' si vous avez besoin d'aide.")
         #
         print(self.player.current_room.get_long_description())
+
+    def move_characters(self):
+        for room in self.rooms:
+            # Créer une copie de la liste des personnages dans la pièce
+            characters_to_move = list(room.characters.values())  # Liste des personnages à déplacer
+            for character in characters_to_move:
+                if character.name =="ravisseur" and not character.has_moved:
+                    character.move()
+                    character.has_moved = True
+
+        for room in self.rooms:
+            for character in room.characters.values():
+                character.has_moved = False
+
+    # def some_function():
+    #     if DEBUG:
+    #         print("DEBUG: Message de débogage dans some_function()")
+    #     print("Message normal pour l'utilisateur")
     
 
 def main():

@@ -272,3 +272,17 @@ class Actions:
         else:
             print(f"L'objet '{item_name}' ne peut pas être chargé ou n'est pas un Beamer.")
             return False
+    
+    def talk(game, list_of_words, number_of_parameters):
+        if len(list_of_words) != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG1.format(command_word=command_word))
+            return False
+
+        if len(game.player.current_room.characters) >= 1:
+            character_name = list_of_words[1].lower()
+            character = game.player.current_room.get_character(character_name)
+            print(character.get_msg())
+        else:
+            print("Il n'y a aucun PNJ dans cette pièce")
+        return True
