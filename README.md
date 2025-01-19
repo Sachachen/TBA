@@ -1,7 +1,7 @@
 # TBA
 
 Dans ce jeu, vous incarnerez un jeune garçon dont la famille a été déportée du pays. Votre mission : retrouver chaque membre de votre famille et les réunir. Pour cela, vous devrez explorer divers lieux, interagir avec des personnages clés et résoudre des énigmes pour obtenir des indices sur leur localisation. 
-Pour cela, vous devrez explorer huit lieux différents
+Vous devrez explorer huit lieux différents afin de retrouver tous les membres de la famille et atteindre l'île flottante !
 
 
 
