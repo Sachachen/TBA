@@ -3,12 +3,13 @@
 class Room:
 
     # Define the constructor. 
-    def __init__(self, name, description):
+    def __init__(self, name, description, item_requis=None):
         self.name = name
         self.description = description
         self.exits = {}
         self.inventory = set()
         self.characters = {}
+        self.item_required = item_requis
     
     # Define the get_exit method.
     def get_exit(self, direction):
@@ -16,8 +17,7 @@ class Room:
         # Return the room in the given direction if it exists.
         if direction in self.exits.keys():
             return self.exits[direction]
-        else:
-            return None
+        return None
     
     # Return a string describing the room's exits.
     def get_exit_string(self):
@@ -39,8 +39,7 @@ class Room:
                 inventory_contents += f"\n  -{character}"
             return inventory_contents
     
-    def get_character(self, name):        
-        name_lower = name.lower()        
+    def get_character(self, name):               
         for key in self.characters.keys():
             if key.lower() == name_lower:
                 return self.characters[key]

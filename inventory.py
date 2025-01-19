@@ -6,9 +6,9 @@ class Inventory:
         self.max_weight = 5000
 
     def add(self, item):
-        if self.poid + item.weight <= self.max_weight:
+        if self.poids + item.weight <= self.max_weight:
             self.inventory[item.name] = item
-            self.poid += item.weight
+            self.poids += item.weight
             print(f"{item.name} a été ajouté à l'inventaire.")
             return True
         else:

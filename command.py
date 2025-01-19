@@ -28,7 +28,8 @@ class Command:
     1
 
     """
-
+    # Désactivation de la règle "trop peu de méthodes publiques"
+    # pylint: disable=too-few-public-methods
     # The constructor.
     def __init__(self, command_word, help_string, action, number_of_parameters):
         self.command_word = command_word

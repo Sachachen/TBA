@@ -20,10 +20,12 @@ class Game:
         self.commands = {}
         self.player = None
         self.items = []
-    
+
     # Setup the game
     def setup(self):
-
+        """
+        
+        """
         # Setup commands
 
         help = Command("help", " : afficher cette aide", Actions.help, 0)
@@ -53,9 +55,13 @@ class Game:
         
         # Setup rooms
 
-        train = Room("train", "dans le train de l'infini.")
+        gant_force = Item("gant_force", "des gants donnant une force herculéenne", 10)
+        self.items.append(gant_force)
+        train = Room("train", "dans le train de l'infini.",gant_force)
         self.rooms.append(train)
-        monastere = Room("monastere", "dans un monastère.")
+        deguisement = Item("deguisement", "un deguisement rouge et blanc",20)
+        self.items.append(deguisement)
+        monastere = Room("monastere", "dans un monastère.",deguisement)
         self.rooms.append(monastere)
         village = Room("village", "dans un village.")
         self.rooms.append(village)
@@ -67,7 +73,7 @@ class Game:
         self.rooms.append(marche_souterrain)
         mine = Room("mine", "dans un champ de mines.")
         self.rooms.append(mine)
-        arene = Room("arene", "dans une arène")
+        arene = Room("arene", "dans une arène.")
         self.rooms.append(arene)
 
         # Create exits for rooms
@@ -89,32 +95,32 @@ class Game:
         lampe_torche = Item("lampe_torche", "une lampe torche permettant de voir dans l'obscurité", 1)
         self.items.append(lampe_torche)
         mine.inventory.add(lampe_torche)
-        gant_force = Item("gant_force", "des gants donnant une force herculéenne", 10)
-        self.items.append(gant_force)
         arene.inventory.add(gant_force)
         boite_cle_serrage = Item("boite_cle_serrage", "une boite de clé de serrage",20)
         self.items.append(boite_cle_serrage)
         train.inventory.add(boite_cle_serrage)
-        deguisement = Item("deguisement", "un deguisement rouge et blanc",20)
-        self.items.append(deguisement)
-        village.inventory.add(deguisement)
         beamer = Beamer("beamer", "Un appareil magique pour se téléporter", 25)
         self.items.append(beamer)
         village.inventory.add(beamer)
+        henoch = Item("henoch", "mon petit frère",0)
+        self.items.append(henoch)
+        marche_souterrain.inventory.add(henoch)
+        hercule = Item("hercule", "mon grand frère",0)
+        self.items.append(hercule)
+        arene.inventory.add(hercule)
+        maman = Item("maman", "ma mère",0)
+        self.items.append(maman)
+        ile_flottante.inventory.add(maman)
 
         # Setup characters (PNJ)
-        marchand = Character("marchand", "un marchand", village, ["Approche, voyageur ! Mes capes bénies protégeront ton âme et guideront tes pas !"])
+        marchand = Character("marchand", "un marchand", village, ["Approche, voyageur ! Je t'offre une cape bénie protége ton âme et guideront tes pas !"])
         village.characters[marchand.name] = marchand
-        religieux = Character("religieux", "un religieux vêtu d'une longue robe rouge recouvrant le corps jusqu'aux pieds et d'une capuche blanche", monastere, ["Seuls les élus peuvent franchir ce seuil. Tourne les talons, impur !", "Ta profanation sera lavée dans ton propre sang.", "Bienvenue, frère dans la foi. Que ta dévotion illumine ces lieux sacrés."])
+        religieux = Character("religieux", "un religieux vêtu d'une longue robe rouge recouvrant le corps jusqu'aux pieds et d'une capuche blanche", monastere, ["Laisse-moi faire ma prière"])
         monastere.characters[religieux.name] = religieux
-        Henoch = Character("Henoch", "mon petit frère", monastere, ["Merci grand frère, tu m'as retrouvé"])
-        marche_souterrain.characters[Henoch.name] = Henoch
-        Hercule = Character("Hercule", "mon grand frère", arene, ["HAHAHA, merci petit frère"])
-        arene.characters[Hercule.name] = Hercule
-        maman = Character("maman", "ma mère", ile_flottante, ["Mes enfants vous êtes sain et sauf, malheureusement votre père n'est plus là..."])
-        ile_flottante.characters[maman.name] = maman
         ravisseur = Character("ravisseur", "personnage très menaçante", mine, ["ARRETE TOI","Un seul cri, et tu regretteras d’être encore en vie."])
         mine.characters[ravisseur.name] = ravisseur
+        villageois = Character("villageois", "Informateur", village, ["Ta famille a été kidnappé !","Henoch se trouve près du monastère et Hercule à l'arène"])
+        village.characters[villageois.name] = villageois
 
         # Setup player and starting room
 
@@ -130,6 +136,7 @@ class Game:
         while not self.finished:
             # Get the command from the player
             self.process_command(input("> "))
+            self.endgame()
         return None
 
     # Process the command entered by the player
@@ -168,13 +175,27 @@ class Game:
             characters_to_move = list(room.characters.values())  # Liste des personnages à déplacer
             for character in characters_to_move:
                 if character.name =="ravisseur" and not character.has_moved:
-                    character.move()
+                    character.move_character()
                     character.has_moved = True
-
+            
         for room in self.rooms:
             for character in room.characters.values():
                 character.has_moved = False
 
+    def endgame(self):
+        if self.player.current_room.name == "ile_flottante" and all(item in self.player.inventory for item in ["henoch", "hercule", "maman"]):
+            self.finished = True 
+            print("Vous avez retrouvé votre famille")
+            return True
+        if self.player.tentative == 2 and not any(item =="deguisement" for item in self.player.inventory):
+            self.finished = True
+            print("Ta profanation sera lavée dans ton propre sang.")
+            return True
+        if self.player.move_count > 31 :
+            self.finished = True
+            print("Le ravisseur vous a kidnappé\n")
+            return True
+        return False
     # def some_function():
     #     if DEBUG:
     #         print("DEBUG: Message de débogage dans some_function()")

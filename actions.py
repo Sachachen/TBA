@@ -19,6 +19,7 @@ MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
 
 class Actions:
 
+    @staticmethod
     def go(game, list_of_words, number_of_parameters):
         """
         Move the player in the direction specified by the parameter.
@@ -71,11 +72,12 @@ class Actions:
         if direction in directions:
             direction = directions[direction]
             # Move the player in the direction specified by the parameter.
-            player.move(direction)
+            player.move(direction,player)
         else:
             print(f"Direction '{direction}' non reconnue.")
         return True
 
+    @staticmethod
     def quit(game, list_of_words, number_of_parameters):
         """
         Quit the game.
@@ -115,6 +117,7 @@ class Actions:
         game.finished = True
         return True
 
+    @staticmethod
     def help(game, list_of_words, number_of_parameters):
         """
         Print the list of available commands.
@@ -155,6 +158,7 @@ class Actions:
         print()
         return True
     
+    @staticmethod
     def history(game, list_of_words, number_of_parameters):
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
@@ -164,6 +168,7 @@ class Actions:
             return False
         game.player.get_history()
     
+    @staticmethod
     def back(game, list_of_words, number_of_parameters):
         if len(list_of_words) != number_of_parameters + 1:
             command_word = list_of_words[0]
@@ -171,6 +176,7 @@ class Actions:
             return False
         return game.player.back()
     
+    @staticmethod
     def look(game, list_of_words, number_of_parameters):
         if len(list_of_words) != number_of_parameters + 1:
             command_word = list_of_words[0]
@@ -179,6 +185,7 @@ class Actions:
         
         print(game.player.current_room.get_inventory())
 
+    @staticmethod
     def take(game, list_of_words, number_of_parameters):
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
@@ -212,6 +219,7 @@ class Actions:
             print(f"\nL'objet '{name_item}' n'est pas dans cet endroit.\n")
         return True
     
+    @staticmethod
     def drop(game, list_of_words, number_of_parameters):
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
@@ -231,6 +239,7 @@ class Actions:
             print(f"\nVous ne possedez pas cet objet : '{name_item}'.\n")
         return True
     
+    @staticmethod
     def check(game, list_of_words, number_of_parameters):
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
@@ -240,6 +249,7 @@ class Actions:
             return False
         print(f"\n{game.player.get_inventory()}")
     
+    @staticmethod
     def use(game, list_of_words, number_of_parameters):
         if len(list_of_words) != number_of_parameters + 1:
             command_word = list_of_words[0]
@@ -256,6 +266,7 @@ class Actions:
             print(f"L'objet '{item_name}' n'est pas utilisable ou n'est pas un Beamer.")
             return False
 
+    @staticmethod
     def charge(game, list_of_words, number_of_parameters):
         if len(list_of_words) != number_of_parameters + 1:
             command_word = list_of_words[0]
@@ -273,6 +284,7 @@ class Actions:
             print(f"L'objet '{item_name}' ne peut pas être chargé ou n'est pas un Beamer.")
             return False
     
+    @staticmethod
     def talk(game, list_of_words, number_of_parameters):
         if len(list_of_words) != number_of_parameters + 1:
             command_word = list_of_words[0]
@@ -282,7 +294,14 @@ class Actions:
         if len(game.player.current_room.characters) >= 1:
             character_name = list_of_words[1].lower()
             character = game.player.current_room.get_character(character_name)
-            print(character.get_msg())
+            if character is not None:
+                print(character.get_msg())
+                if character_name == "marchand":
+                    for item in game.items :
+                        if item.name == "deguisement":
+                            game.player.inventory[item.name]=item
+            else:
+                print(f"Il n'y a pas ce PNJ {character_name} dans cette pièce")
         else:
             print("Il n'y a aucun PNJ dans cette pièce")
         return True

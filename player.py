@@ -8,21 +8,36 @@ class Player():
         self.current_room = None
         self.inventory = {}
         self.max_weight = 30
+        self.move_count = 0
+        self.tentative = 0
     
     # Define the move method.
-    def move(self, direction):
+    def move(self, direction, player):
         # Get the next room from the exits dictionary of the current room.
         next_room = self.current_room.exits[direction]
         # If the next room is None, print an error message and return False.
         if next_room is None:
             print("\nAucune porte dans cette direction !\n")
             return False
+        item = next_room.item_required
+        if item and item not in player.inventory:
+            if next_room.name == "train":
+                print("\nVous avez besoin d'un item qui vous donne de la force\n")
+                return False
 
         # Set the current room to the next room.
         self.history.append(self.current_room)
         self.current_room = next_room
+        self.move_count += 1
         print(self.current_room.get_long_description())
+        if self.current_room.name == "monastere":
+            if self.current_room.item_required not in player.inventory:
+                print("Seuls les élus peuvent franchir ce seuil. Tourne les talons, impur! La prochaine fois je te sévirais.")
+                self.tentative +=1
+            else:
+                print("Bienvenue, frère dans la foi. Que ta dévotion illumine ces lieux sacrés.")
         self.get_history()
+        print(f"Nombre de déplacement : {self.move_count}")
         return True
     
     # Retoure les lieux visités
@@ -46,9 +61,8 @@ class Player():
                 print(self.current_room.get_long_description())
                 self.get_history()
                 return True
-            else:
-                print("\nVous ne pouvez pas revenir en arrière !\n")
-                return False
+            print("\nVous ne pouvez pas revenir en arrière !\n")
+            return False
         except Exception as e:
             print(f"\nUne erreur inattendue s'est produite lors du retour en arrière : {e}")
             return False
