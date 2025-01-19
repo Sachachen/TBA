@@ -76,7 +76,7 @@ class Game:
         # Setup rooms
         gant_force = Item("gant_force", "des gants donnant une force herculéenne", 10)
         self.items.append(gant_force)
-        train = Room("train", "dans le train de l'infini.",gant_force)
+        train = Room("train", "dans le train de l'infini.")
         self.rooms.append(train)
         deguisement = Item("deguisement", "un deguisement rouge et blanc",20)
         self.items.append(deguisement)
