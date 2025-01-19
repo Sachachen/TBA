@@ -1,6 +1,27 @@
-# beamer.py
-
 from item import Item
+"""
+Module beamer
+
+Ce module contient la méthode d'un item capable de nous téléporter
+
+Chaque méthode d'action prend les paramètres suivants :
+- 'game': L'objet représentant l'état actuel du jeu.
+- 'list_of_words': La liste des mots constituant la commande saisie.
+- 'number_of_parameters': Le nombre de paramètres attendu pour la commande.
+
+Les méthodes vérifient si le nombre de paramètres est correct et effectuent une action
+appropriée dans le jeu (par exemple, déplacer le joueur, prendre un objet, ou quitter le jeu).
+
+Messages d'erreur :
+- Les messages pour les erreurs de paramètres sont stockés dans les constantes 'MSG0' et 'MSG1'.
+
+Classes :
+- 'Actions': Contient toutes les méthodes statiques pour exécuter les commandes du joueur.
+
+Constantes :
+- 'MSG0': Message d'erreur pour les commandes ne prenant pas de paramètres.
+- 'MSG1': Message d'erreur pour les commandes prenant exactement un paramètre.
+"""
 
 class Beamer(Item):
     def __init__(self, name, description, weight, teleport_room=None):

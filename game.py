@@ -1,7 +1,11 @@
-# Description: Game class
+"""
+Module contenant la classe Game.
 
+La classe Game représente le moteur principal du jeu d'aventure textuel.
+Elle configure les éléments du jeu, traite les commandes des joueurs
+et gère la boucle principale de jeu.
+"""
 # Import modules
-
 from room import Room
 from player import Player
 from command import Command
@@ -12,9 +16,22 @@ from character import Character
 from debug import DEBUG
 
 class Game:
+    """
+    Classe principale pour gérer le jeu.
 
+    Attributs:
+        finished (bool): Indique si le jeu est terminé.
+        rooms (list[Room]): Liste des salles disponibles dans le jeu.
+        commands (dict): Dictionnaire des commandes disponibles.
+        player (Player): Instance représentant le joueur.
+        items (list[Item]): Liste des objets du jeu.
+        characters (list[Character]): Liste des personnages non-joueurs.
+    """
     # Constructor
     def __init__(self):
+        """
+        Initialise les attributs de la classe Game.
+        """
         self.finished = False
         self.rooms = []
         self.commands = {}
@@ -24,10 +41,14 @@ class Game:
     # Setup the game
     def setup(self):
         """
-        
+        Configure les éléments nécessaires au jeu, tels que :
+        - Les commandes disponibles.
+        - Les objets présents dans les salles.
+        - Les salles et leurs sorties.
+        - Les personnages non-joueurs.
+        - L'état initial du joueur.
         """
         # Setup commands
-
         help = Command("help", " : afficher cette aide", Actions.help, 0)
         self.commands["help"] = help
         quit = Command("quit", " : quitter le jeu", Actions.quit, 0)
@@ -52,9 +73,7 @@ class Game:
         self.commands["charge"] = charge
         talk = Command("talk", " : interagir avec un pnj de la meme piece", Actions.talk, 1)
         self.commands["talk"] = talk
-        
         # Setup rooms
-
         gant_force = Item("gant_force", "des gants donnant une force herculéenne", 10)
         self.items.append(gant_force)
         train = Room("train", "dans le train de l'infini.",gant_force)
@@ -77,7 +96,6 @@ class Game:
         self.rooms.append(arene)
 
         # Create exits for rooms
-
         train.exits = {"N" : None, "E" : None, "S" : village, "O" : None, "U" : ile_flottante, "D" : None}
         monastere.exits = {"N" : None, "E" : village, "S" : None, "O" : None, "U" : None, "D" : marche_souterrain}
         village.exits = {"N" : train, "E" : arene, "S" : None, "O" : monastere, "U" : None, "D" : None}
@@ -86,9 +104,7 @@ class Game:
         marche_souterrain.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : monastere, "D" : None}
         mine.exits = {"N" : village, "E" : None, "S" : None, "O" : None, "U" : None, "D" : None}
         arene.exits = {"N" : None, "E" : None, "S" : None, "O" : village, "U" : None, "D" : None}
-        
         # Setup items
-
         sword = Item("sword", "une épée au fil tranchant comme un rasoir", 3)
         self.items.append(sword)
         foret.inventory.add(sword)
@@ -123,13 +139,16 @@ class Game:
         village.characters[villageois.name] = villageois
 
         # Setup player and starting room
-
         self.player = Player(input("\nEntrez votre nom: "))
         self.player.current_room = foret
 
 
     # Play the game
     def play(self):
+        """
+        Démarre et gère la boucle principale du jeu.
+        Le joueur peut entrer des commandes jusqu'à ce que le jeu soit terminé.
+        """
         self.setup()
         self.print_welcome()
         # Loop until the game is finished
@@ -141,7 +160,12 @@ class Game:
 
     # Process the command entered by the player
     def process_command(self, command_string) -> None:
+        """
+        Traite une commande saisie par le joueur.
 
+        Args:
+            command_string (str): La commande saisie par le joueur.
+        """
         #Affiche rien lorsque le joueur tape "entrer"
         if command_string=='':
             return
@@ -161,30 +185,38 @@ class Game:
             if command_word != "quit":
                     self.move_characters()
                     pass
-
     # Print the welcome message
     def print_welcome(self):
+        """
+        Affiche un message de bienvenue et une introduction au jeu.
+        """
         print(f"\nBienvenue {self.player.name} dans ce jeu d'aventure !")
+        print("\nVotre famille ont disparu. Partez à leurs recherches.")
         print("Entrez 'help' si vous avez besoin d'aide.")
-        #
         print(self.player.current_room.get_long_description())
 
     def move_characters(self):
+        """
+        Déplace aléatoirement un liste de pnj
+        """
         for room in self.rooms:
             # Créer une copie de la liste des personnages dans la pièce
-            characters_to_move = list(room.characters.values())  # Liste des personnages à déplacer
+            # Liste des personnages à déplacer
+            characters_to_move = list(room.characters.values())
             for character in characters_to_move:
                 if character.name =="ravisseur" and not character.has_moved:
                     character.move_character()
                     character.has_moved = True
-            
         for room in self.rooms:
             for character in room.characters.values():
                 character.has_moved = False
 
     def endgame(self):
+        """
+        Conditions de victoire et de défaites
+        """
         if self.player.current_room.name == "ile_flottante" and all(item in self.player.inventory for item in ["henoch", "hercule", "maman"]):
-            self.finished = True 
+            self.finished = True
             print("Vous avez retrouvé votre famille")
             return True
         if self.player.tentative == 2 and not any(item =="deguisement" for item in self.player.inventory):
@@ -196,16 +228,12 @@ class Game:
             print("Le ravisseur vous a kidnappé\n")
             return True
         return False
-    # def some_function():
-    #     if DEBUG:
-    #         print("DEBUG: Message de débogage dans some_function()")
-    #     print("Message normal pour l'utilisateur")
-    
 
 def main():
+    """
+    Point d'entrée principal pour exécuter le jeu.
+    """
     # Create a game object and play the game
     Game().play()
-    
-
 if __name__ == "__main__":
     main()
